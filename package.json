@@ -1,0 +1,29 @@
+{
+  "name": "insight-to-blockbook",
+  "version": "1.0.0",
+  "description": "Translates Insight to Blockbook calls",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "lint": "eslint ./",
+    "lint:fix": "eslint ./ --fix"
+  },
+  "author": "Tadeas Kmenta",
+  "license": "MIT",
+  "dependencies": {
+    "apicache": "^1.6.3",
+    "axios": "^0.24.0",
+    "config": "^3.3.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "lru-cache": "^6.0.0",
+    "nodemon": "^2.0.15",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.8.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "power-assert": "^1.6.1"
+  }
+}
