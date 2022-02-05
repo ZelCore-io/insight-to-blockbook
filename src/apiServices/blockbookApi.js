@@ -11,10 +11,10 @@ async function getStatus(req, res) {
 
     const infoData = {
       info: {
-        blocks: urlResponse.backend.blocks,
-        version: urlResponse.backend.version,
-        protocolversion: urlResponse.backend.protocolVersion,
-        difficulty: urlResponse.backend.difficulty,
+        blocks: +urlResponse.backend.blocks,
+        version: +urlResponse.backend.version,
+        protocolversion: +urlResponse.backend.protocolVersion,
+        difficulty: +urlResponse.backend.difficulty,
         errors: urlResponse.backend.errors,
       },
     };
