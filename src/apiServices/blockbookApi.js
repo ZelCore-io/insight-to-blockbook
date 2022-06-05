@@ -141,17 +141,17 @@ async function getTxs(req, res) {
           // eslint-disable-next-line no-param-reassign
           vin.value = Number((+vin.value / (10 ** decimals)).toFixed(8));
           // eslint-disable-next-line no-param-reassign
-          vin.scriptPubKey = vin;
+          vin.scriptPubKey = JSON.parse(JSON.stringify(vin));
           // eslint-disable-next-line no-param-reassign
-          vin.scriptPubKey.asm = JSON.stringify(vin.addresses).replaceAll('OP_RETURN (', 'OP_RETURN ');
+          vin.scriptPubKey.asm = JSON.parse(JSON.stringify(vin.addresses).replaceAll('OP_RETURN (', 'OP_RETURN '));
         });
         tx.vout.forEach((vout) => {
           // eslint-disable-next-line no-param-reassign
           vout.value = Number((+vout.value / (10 ** decimals)).toFixed(8));
           // eslint-disable-next-line no-param-reassign
-          vout.scriptPubKey = vout;
+          vout.scriptPubKey = JSON.parse(JSON.stringify(vout));
           // eslint-disable-next-line no-param-reassign
-          vout.scriptPubKey.asm = JSON.stringify(vout.addresses).replaceAll('OP_RETURN (', 'OP_RETURN ');
+          vout.scriptPubKey.asm = JSON.parse(JSON.stringify(vout.addresses).replaceAll('OP_RETURN (', 'OP_RETURN '));
         });
         myResponse.items.push(tx);
       });
