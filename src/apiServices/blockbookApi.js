@@ -143,7 +143,7 @@ async function getTxs(req, res) {
           // eslint-disable-next-line no-param-reassign
           vin.scriptPubKey = tx.vin;
           // eslint-disable-next-line no-param-reassign
-          vin.scriptPubKey.asm = tx.vin.addresses;
+          vin.scriptPubKey.asm = JSON.stringify(tx.vin.addresses).replaceAll('OP_RETURN (', 'OP_RETURN ');
         });
         tx.vout.forEach((vout) => {
           // eslint-disable-next-line no-param-reassign
@@ -151,15 +151,13 @@ async function getTxs(req, res) {
           // eslint-disable-next-line no-param-reassign
           vout.scriptPubKey = tx.vout;
           // eslint-disable-next-line no-param-reassign
-          vout.scriptPubKey.asm = tx.vout.addresses;
+          vout.scriptPubKey.asm = JSON.stringify(tx.vout.addresses).replaceAll('OP_RETURN (', 'OP_RETURN ');
         });
         myResponse.items.push(tx);
       });
     }
 
-    const responseString = JSON.stringify(myResponse);
-    const q = responseString.replaceAll('OP_RETURN (', 'OP_RETURN ');
-    res.json(JSON.parse(q));
+    res.json(myResponse);
   } catch (error) {
     log.error(error);
     res.statusCode = 500;
