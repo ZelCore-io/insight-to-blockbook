@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const axios = require('axios');
 const config = require('config');
 const log = require('../lib/log');
@@ -133,24 +134,19 @@ async function getTxs(req, res) {
 
     if (urlResponse.transactions) {
       urlResponse.transactions.forEach((tx) => {
-        // eslint-disable-next-line no-param-reassign
         tx.time = tx.blockTime;
-        // eslint-disable-next-line no-param-reassign
         tx.fees = Number((+tx.fees / (10 ** decimals)).toFixed(8));
         tx.vin.forEach((vin) => {
-          // eslint-disable-next-line no-param-reassign
+          vin.valueSat = +vin.value;
           vin.value = Number((+vin.value / (10 ** decimals)).toFixed(8));
-          // eslint-disable-next-line no-param-reassign
           vin.scriptPubKey = JSON.parse(JSON.stringify(vin));
-          // eslint-disable-next-line no-param-reassign
+          // eslint-disable-next-line prefer-destructuring
+          vin.addr = vin.addresses[0];
           vin.scriptPubKey.asm = vin.addresses[0].replaceAll('OP_RETURN (', 'OP_RETURN ');
         });
         tx.vout.forEach((vout) => {
-          // eslint-disable-next-line no-param-reassign
           vout.value = Number((+vout.value / (10 ** decimals)).toFixed(8));
-          // eslint-disable-next-line no-param-reassign
           vout.scriptPubKey = JSON.parse(JSON.stringify(vout));
-          // eslint-disable-next-line no-param-reassign
           vout.scriptPubKey.asm = vout.addresses[0].replaceAll('OP_RETURN (', 'OP_RETURN ');
         });
         myResponse.items.push(tx);
