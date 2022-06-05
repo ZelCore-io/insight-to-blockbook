@@ -124,28 +124,34 @@ async function getTxs(req, res) {
 
     const myResponse = {
       totalItems: urlResponse.txs,
-      from,
-      to: urlResponse.itemsOnPage > to ? urlResponse.itemsOnPage : to,
+      from: +from,
+      to: +urlResponse.itemsOnPage > +to ? +urlResponse.itemsOnPage : +to,
       items: [],
     };
 
     const decimals = 8;
 
-    urlResponse.transactions.forEach((tx) => {
-      // eslint-disable-next-line no-param-reassign
-      tx.time = tx.blockTime;
-      // eslint-disable-next-line no-param-reassign
-      tx.fees = Number((+tx.fees / (10 ** decimals)).toFixed(8));
-      tx.vin.forEach((vin) => {
+    if (urlResponse.transactions) {
+      urlResponse.transactions.forEach((tx) => {
         // eslint-disable-next-line no-param-reassign
-        vin.value = Number((+vin.value / (10 ** decimals)).toFixed(8));
-      });
-      tx.vout.forEach((vout) => {
+        tx.time = tx.blockTime;
         // eslint-disable-next-line no-param-reassign
-        vout.value = Number((+vout.value / (10 ** decimals)).toFixed(8));
+        tx.fees = Number((+tx.fees / (10 ** decimals)).toFixed(8));
+        tx.vin.forEach((vin) => {
+          // eslint-disable-next-line no-param-reassign
+          vin.value = Number((+vin.value / (10 ** decimals)).toFixed(8));
+        });
+        tx.vout.forEach((vout) => {
+          // eslint-disable-next-line no-param-reassign
+          vout.value = Number((+vout.value / (10 ** decimals)).toFixed(8));
+        });
+        // eslint-disable-next-line no-param-reassign
+        tx.vin.scriptPubKey = tx.vin;
+        // eslint-disable-next-line no-param-reassign
+        tx.vout.scriptPubKey = tx.vout;
+        myResponse.items.push(tx);
       });
-      myResponse.items.push(tx);
-    });
+    }
 
     const responseString = JSON.stringify(myResponse);
     const q = responseString.replaceAll('OP_RETURN (', 'OP_RETURN ');
