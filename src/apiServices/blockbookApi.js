@@ -131,7 +131,7 @@ async function getTxs(req, res) {
 
     const decimals = 8;
 
-    urlResponse.transnactions.forEach((tx) => {
+    urlResponse.transactions.forEach((tx) => {
       // eslint-disable-next-line no-param-reassign
       tx.time = tx.blockTime;
       // eslint-disable-next-line no-param-reassign
