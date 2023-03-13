@@ -142,8 +142,7 @@ async function getTxs(req, res) {
           vin.scriptPubKey = JSON.parse(JSON.stringify(vin));
           // eslint-disable-next-line prefer-destructuring
           vin.addr = vin.addresses[0];
-          // error here
-          vin.scriptPubKey.asm = vin.addresses[0] ? vin.addresses[0].replaceAll('OP_RETURN (', 'OP_RETURN ') : '';
+          vin.scriptPubKey.asm = vin.addresses[0].replace('OP_RETURN (', 'OP_RETURN ');
           if (vin.scriptPubKey.asm.includes('OP_RETURN ')) {
             const myString = vin.scriptPubKey.asm.slice(0, -1);
             const encoded = Buffer.from(myString.split('OP_RETURN ')[1]).toString('hex');
@@ -153,7 +152,7 @@ async function getTxs(req, res) {
         tx.vout.forEach((vout) => {
           vout.value = Number((+vout.value / (10 ** decimals)).toFixed(8));
           vout.scriptPubKey = JSON.parse(JSON.stringify(vout));
-          vout.scriptPubKey.asm = vout.addresses[0].replaceAll('OP_RETURN (', 'OP_RETURN ');
+          vout.scriptPubKey.asm = vout.addresses[0].replace('OP_RETURN (', 'OP_RETURN ');
           if (vout.scriptPubKey.asm.includes('OP_RETURN ')) {
             const myString = vout.scriptPubKey.asm.slice(0, -1);
             const encoded = Buffer.from(myString.split('OP_RETURN ')[1]).toString('hex');
