@@ -1,13 +1,20 @@
 /* eslint-disable no-param-reassign */
 const axios = require('axios');
+const https = require('https');
 const config = require('config');
 const log = require('../lib/log');
+
+const axiosInstance = axios.create({
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false,
+  }),
+});
 
 async function getStatus(req, res) {
   try {
     const url = `${config.blockbook}/api`;
 
-    const response = await axios.get(url);
+    const response = await axiosInstance.get(url);
     const urlResponse = response.data;
 
     const infoData = {
@@ -36,7 +43,7 @@ async function getUtxos(req, res) {
     address = address || req.query.address;
     const url = `${config.blockbook}/api/v2/utxo/${address}`;
 
-    const response = await axios.get(url);
+    const response = await axiosInstance.get(url);
     const urlResponse = response.data;
 
     const utxos = [];
@@ -77,7 +84,7 @@ async function getAddr(req, res) {
     // ignore noTxList
     const url = `${config.blockbook}/api/v2/address/${address}?details=basic`;
 
-    const response = await axios.get(url);
+    const response = await axiosInstance.get(url);
     const urlResponse = response.data;
 
     const decimals = 8;
@@ -120,7 +127,7 @@ async function getTxs(req, res) {
       url = `${config.blockbook}/api/v2/address/${address}?pageSize=1000&details=txs`;
     }
 
-    const response = await axios.get(url);
+    const response = await axiosInstance.get(url);
     const urlResponse = response.data;
 
     const myResponse = {
@@ -187,7 +194,7 @@ async function sendTx(req, res) {
       const hex = body.rawtx;
       const url = `${config.blockbook}/api/v2/sendtx/`;
 
-      const response = await axios.post(url, hex);
+      const response = await axiosInstance.post(url, hex);
       const urlResponse = response.data;
 
       const txid = urlResponse.result;
