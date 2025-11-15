@@ -30,9 +30,18 @@ async function getStatus(req, res) {
   } catch (error) {
     log.error(error);
     res.statusCode = 500;
+
+    // Extract error message safely to avoid circular reference issues
+    let errorMessage = 'Unknown error';
+    if (error.response && error.response.data) {
+      errorMessage = error.response.data.error || error.response.data;
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
     res.json({
       status: 'error',
-      error,
+      error: errorMessage,
     });
   }
 }
@@ -67,9 +76,18 @@ async function getUtxos(req, res) {
   } catch (error) {
     log.error(error);
     res.statusCode = 500;
+
+    // Extract error message safely to avoid circular reference issues
+    let errorMessage = 'Unknown error';
+    if (error.response && error.response.data) {
+      errorMessage = error.response.data.error || error.response.data;
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
     res.json({
       status: 'error',
-      error,
+      error: errorMessage,
     });
   }
 }
@@ -106,9 +124,18 @@ async function getAddr(req, res) {
   } catch (error) {
     log.error(error);
     res.statusCode = 500;
+
+    // Extract error message safely to avoid circular reference issues
+    let errorMessage = 'Unknown error';
+    if (error.response && error.response.data) {
+      errorMessage = error.response.data.error || error.response.data;
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
     res.json({
       status: 'error',
-      error,
+      error: errorMessage,
     });
   }
 }
@@ -174,9 +201,18 @@ async function getTxs(req, res) {
   } catch (error) {
     log.error(error);
     res.statusCode = 500;
+
+    // Extract error message safely to avoid circular reference issues
+    let errorMessage = 'Unknown error';
+    if (error.response && error.response.data) {
+      errorMessage = error.response.data.error || error.response.data;
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
     res.json({
       status: 'error',
-      error,
+      error: errorMessage,
     });
   }
 }
@@ -206,9 +242,18 @@ async function sendTx(req, res) {
     } catch (error) {
       log.error(error);
       res.statusCode = 500;
+
+      // Extract error message safely to avoid circular reference issues
+      let errorMessage = 'Unknown error';
+      if (error.response && error.response.data) {
+        errorMessage = error.response.data.error || error.response.data;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
       res.json({
         status: 'error',
-        error,
+        error: errorMessage,
       });
     }
   });
